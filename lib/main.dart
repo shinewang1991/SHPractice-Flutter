@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Model/post.dart';
+import 'Demo/ListView_Demo.dart';
     void main(){
       runApp(App()
       );
@@ -9,6 +9,7 @@ import 'Model/post.dart';
       @override
       Widget build(BuildContext context){
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           home:Home(),
           theme: ThemeData(
             primarySwatch: Colors.yellow
@@ -17,58 +18,46 @@ import 'Model/post.dart';
       }
     }
 
-    class Hello extends StatelessWidget{
-      @override
-        Widget build(BuildContext context){
-        return   Center(
-          child: Text(
-            'hello',
-            textDirection: TextDirection.ltr,
-            style: TextStyle(
-              fontSize: 40,
-              fontWeight:FontWeight.bold,
-              color: Colors.black,
-            )
-          ),
-        );
-      }
-    }
-
     class Home extends StatelessWidget{
-      Widget _listItemBuilder(BuildContext context, int index){
-        return Container(
-          color: Colors.white,
-          margin:EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Image.network(posts[index].imageUrl),
-              SizedBox(height: 16.0),
-              Text(
-                posts[index].title,
-                style: Theme.of(context).textTheme.title,
-                ),
-                Text(
-                  posts[index].author,
-                  style: Theme.of(context).textTheme.subhead,
-                ),
-                SizedBox(height: 16.0),
-
-            ],
-          ),
-        );
-      }
 
       @override
       Widget build(BuildContext context){
-        return Scaffold(
+        return DefaultTabController(
+          length: 3,
+          child: Scaffold(
             appBar: AppBar(
+              leading: IconButton(
+                icon: Icon(Icons.menu),
+                tooltip: 'Navigation',
+                onPressed:() => debugPrint('Navation button is pressed'),
+              ),
               title:Text('Home'),
+              actions: <Widget>[
+                IconButton(
+                icon: Icon(Icons.search),
+                tooltip: 'Search',
+                onPressed:() => debugPrint('Search button is pressed'),
+              )],
               elevation: 30.0,
+              bottom: TabBar(
+                unselectedLabelColor: Colors.grey,
+                indicatorColor: Colors.black38,
+                indicatorSize: TabBarIndicatorSize.label,
+                tabs: <Widget>[
+                  Tab(icon: Icon(Icons.message)),
+                  Tab(icon: Icon(Icons.mobile_screen_share)),
+                  Tab(icon: Icon(Icons.mood_bad)),
+                ],
+              ),
             ),
-            body: ListView.builder(
-              itemCount: posts.length,
-              itemBuilder:_listItemBuilder,
-            )
-          );
+            body: TabBarView(
+              children: <Widget>[
+                ListViewDemo(),
+                Icon(Icons.local_airport,size:128.0,color:Colors.black),
+                Icon(Icons.local_bar,size:128.0,color:Colors.black),
+              ],
+            ),
+          ),
+        );
       }
     }
